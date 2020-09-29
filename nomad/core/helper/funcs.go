@@ -8,9 +8,26 @@ import (
 
 	multierror "github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/hcl/hcl/ast"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
-// boolToPtr returns the pointer to a boolean
+// MapStringStringSliceValueSet returns the set of values in a map[string][]string
+func MapStringStringSliceValueSet(m map[string][]string) []string {
+	set := make(map[string]struct{})
+	for _, slice := range m {
+		for _, v := range slice {
+			set[v] = struct{}{}
+		}
+	}
+
+	flat := make([]string, 0, len(set))
+	for k := range set {
+		flat = append(flat, k)
+	}
+	return flat
+}
+
+// BoolToPtr returns the pointer to a boolean
 func BoolToPtr(b bool) *bool {
 	return &b
 }
@@ -23,6 +40,11 @@ func StringToPtr(str string) *string {
 // TimeToPtr returns the pointer to a time stamp
 func TimeToPtr(t time.Duration) *time.Duration {
 	return &t
+}
+
+// IntToPtr returns the pointer to an int
+func IntToPtr(i int) *int {
+	return &i
 }
 
 func CheckHCLKeys(node ast.Node, valid []string) error {
@@ -107,4 +129,31 @@ func unusedKeysImpl(path []string, val reflect.Value) error {
 		}
 	}
 	return nil
+}
+
+type StateWriter struct {
+	d      *schema.ResourceData
+	errors []string
+}
+
+func NewStateWriter(d *schema.ResourceData) *StateWriter {
+	return &StateWriter{d: d}
+}
+
+func (sw *StateWriter) Set(key string, value interface{}) {
+	err := sw.d.Set(key, value)
+	if err != nil {
+		sw.errors = append(
+			sw.errors,
+			fmt.Sprintf(" - failed to set '%s': %v", key, err),
+		)
+	}
+}
+
+func (sw *StateWriter) Error() error {
+	if sw.errors == nil {
+		return nil
+	}
+	errors := strings.Join(sw.errors, "\n")
+	return fmt.Errorf("Failed to write the state:\n%s", errors)
 }

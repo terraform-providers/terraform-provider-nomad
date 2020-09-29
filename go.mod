@@ -12,13 +12,15 @@ exclude (
 )
 
 require (
-	github.com/google/go-cmp v0.3.1
-	github.com/hashicorp/go-multierror v1.0.0
-	github.com/hashicorp/go-version v1.2.0
-	github.com/hashicorp/hcl v0.0.0-20170504190234-a4b07c25de5f
-	github.com/hashicorp/nomad/api v0.0.0-20200812181322-71e8a68d9948
+	github.com/davecgh/go-spew v1.1.1
+	github.com/google/go-cmp v0.4.0
+	github.com/hashicorp/go-multierror v1.1.0
+	github.com/hashicorp/go-version v1.2.1-0.20191009193637-2046c9d0f0b0
+	github.com/hashicorp/hcl v1.0.1-0.20191016231534-914dc3f8dd7c
+	github.com/hashicorp/nomad v0.12.5
+	github.com/hashicorp/nomad/api v0.0.0-20200924154459-261adf0b4d76
 	github.com/hashicorp/terraform-plugin-sdk v1.15.0
 	github.com/hashicorp/vault v0.10.4
-	github.com/mitchellh/mapstructure v1.1.2
+	github.com/mitchellh/mapstructure v1.3.1
 	github.com/stretchr/testify v1.5.1
 )

@@ -12,6 +12,7 @@ import (
 type ProviderConfig struct {
 	client     *api.Client
 	vaultToken *string
+	region     *string
 }
 
 func Provider() terraform.ResourceProvider {
@@ -83,6 +84,7 @@ func Provider() terraform.ResourceProvider {
 			"nomad_acl_policy":          resourceACLPolicy(),
 			"nomad_acl_token":           resourceACLToken(),
 			"nomad_job":                 resourceJob(),
+			"nomad_job_v2":              resourceJobV2(),
 			"nomad_namespace":           resourceNamespace(),
 			"nomad_quota_specification": resourceQuotaSpecification(),
 			"nomad_sentinel_policy":     resourceSentinelPolicy(),
@@ -132,6 +134,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	res := ProviderConfig{
 		client:     client,
 		vaultToken: &vaultToken,
+		region:     &conf.Region,
 	}
 
 	return res, nil

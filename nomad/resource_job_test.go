@@ -199,7 +199,11 @@ func TestResourceJob_serviceWithoutDeployment(t *testing.T) {
 func TestResourceJob_multiregion(t *testing.T) {
 	r.Test(t, r.TestCase{
 		Providers: testProviders,
-		PreCheck:  func() { testAccPreCheck(t); testCheckMinVersion(t, "0.12.0-beta1") },
+		PreCheck: func() {
+			testAccPreCheck(t)
+			testCheckMinVersion(t, "0.12.0-beta1")
+			testCheckEnt(t)
+		},
 		Steps: []r.TestStep{
 			{
 				Config: testResourceJob_multiregion,
@@ -1721,7 +1725,7 @@ func TestResourceJob_vault(t *testing.T) {
 func TestResourceJob_vaultMultiNamespace(t *testing.T) {
 	r.Test(t, r.TestCase{
 		Providers: testProviders,
-		PreCheck:  func() { testAccPreCheck(t); testCheckVaultEnabled(t) },
+		PreCheck:  func() { testAccPreCheck(t); testCheckEnt(t); testCheckVaultEnabled(t) },
 		Steps: []r.TestStep{
 			{
 				Config: testResourceJob_validVaultNamspaceConfig,
