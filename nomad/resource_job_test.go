@@ -32,12 +32,12 @@ func TestResourceJob_basic(t *testing.T) {
 		PreCheck:  func() { testAccPreCheck(t) },
 		Steps: []r.TestStep{
 			{
-				Config: testResourceJob_initialConfig,
+				Config: testResourceJob_initialConfig("foo-basic"),
 				Check:  testResourceJob_initialCheck(t),
 			},
 		},
 
-		CheckDestroy: testResourceJob_checkDestroy("foo"),
+		CheckDestroy: testResourceJob_checkDestroy("foo-basic"),
 	})
 }
 
@@ -348,7 +348,7 @@ func TestResourceJob_json(t *testing.T) {
 			},
 		},
 
-		CheckDestroy: testResourceJob_checkDestroy("foo-json"),
+		CheckDestroy: testResourceJob_checkDestroy("foo-json-with-root"),
 	})
 
 	// Test plain jobspec.
@@ -362,7 +362,7 @@ func TestResourceJob_json(t *testing.T) {
 			},
 		},
 
-		CheckDestroy: testResourceJob_checkDestroy("foo-json"),
+		CheckDestroy: testResourceJob_checkDestroy("foo-json-without-root"),
 	})
 }
 
@@ -372,18 +372,18 @@ func TestResourceJob_refresh(t *testing.T) {
 		PreCheck:  func() { testAccPreCheck(t) },
 		Steps: []r.TestStep{
 			{
-				Config: testResourceJob_initialConfig,
+				Config: testResourceJob_initialConfig("foo-refresh"),
 				Check:  testResourceJob_initialCheck(t),
 			},
 
 			// This should successfully cause the job to be recreated,
 			// testing the Exists function.
 			{
-				PreConfig: testResourceJob_deregister(t, "foo"),
-				Config:    testResourceJob_initialConfig,
+				PreConfig: testResourceJob_deregister(t, "foo-refresh"),
+				Config:    testResourceJob_initialConfig("foo-refresh"),
 			},
 		},
-		CheckDestroy: testResourceJob_checkDestroy("foo"),
+		CheckDestroy: testResourceJob_checkDestroy("foo-refresh"),
 	})
 }
 
@@ -427,19 +427,19 @@ func TestResourceJob_rename(t *testing.T) {
 		PreCheck:  func() { testAccPreCheck(t) },
 		Steps: []r.TestStep{
 			{
-				Config: testResourceJob_initialConfig,
+				Config: testResourceJob_initialConfig("foo-rename"),
 				Check:  testResourceJob_initialCheck(t),
 			},
 			{
 				Config: testResourceJob_renameConfig,
 				Check: resource.ComposeTestCheckFunc(
-					testResourceJob_checkDestroy("foo"),
-					testResourceJob_checkExists("bar"),
+					testResourceJob_checkDestroy("foo-rename"),
+					testResourceJob_checkExists("bar-rename"),
 				),
 			},
 		},
 
-		CheckDestroy: testResourceJob_checkDestroy("bar"),
+		CheckDestroy: testResourceJob_checkDestroy("bar-rename"),
 	})
 }
 
@@ -669,10 +669,11 @@ resource "nomad_job" "parameterized" {
 }
 `
 
-var testResourceJob_initialConfig = `
+func testResourceJob_initialConfig(name string) string {
+	return fmt.Sprintf(`
 resource "nomad_job" "test" {
 	jobspec = <<EOT
-		job "foo" {
+		job "%s" {
 			datacenters = ["dc1"]
 			type = "service"
 			group "foo" {
@@ -699,7 +700,8 @@ resource "nomad_job" "test" {
 		}
 	EOT
 }
-`
+`, name)
+}
 
 var testResourceJob_initialConfigNamespace = `
 resource "nomad_namespace" "test-namespace" {
@@ -981,8 +983,8 @@ resource "nomad_job" "test" {
 {
   "Job": {
     "Datacenters": [ "dc1" ],
-    "ID": "foo-json",
-    "Name": "foo-json",
+    "ID": "foo-json-with-root",
+    "Name": "foo-json-with-root",
     "Type": "service",
     "TaskGroups": [
       {
@@ -1019,8 +1021,8 @@ resource "nomad_job" "test" {
 	jobspec = <<EOT
 {
   "Datacenters": [ "dc1" ],
-  "ID": "foo-json",
-  "Name": "foo-json",
+  "ID": "foo-json-without-root",
+  "Name": "foo-json-without-root",
   "Type": "service",
   "TaskGroups": [
     {
@@ -1053,7 +1055,7 @@ EOT
 var testResourceJob_renameConfig = `
 resource "nomad_job" "test" {
     jobspec = <<EOT
-		job "bar" {
+		job "bar-rename" {
 		    datacenters = ["dc1"]
 		    type = "service"
 		    group "foo" {
