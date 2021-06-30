@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func dataSourceVolumes() *schema.Resource {
@@ -55,7 +55,7 @@ func dataSourceVolumes() *schema.Resource {
 }
 
 func volumesDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	ns := d.Get("namespace").(string)
 	if ns == "" {

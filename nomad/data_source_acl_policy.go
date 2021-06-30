@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceAclPolicy() *schema.Resource {
@@ -34,7 +34,7 @@ func dataSourceAclPolicy() *schema.Resource {
 
 func dataSourceAclPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	name := d.Get("name").(string)
 

@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceSentinelPolicy() *schema.Resource {
@@ -68,7 +68,7 @@ func resourceSentinelPolicy() *schema.Resource {
 }
 
 func resourceSentinelPolicyWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	policy := api.SentinelPolicy{
 		Name:             d.Get("name").(string),
@@ -90,7 +90,7 @@ func resourceSentinelPolicyWrite(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceSentinelPolicyDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	name := d.Id()
 
 	log.Printf("[DEBUG] Deleting Sentinel policy %q", name)
@@ -104,7 +104,7 @@ func resourceSentinelPolicyDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceSentinelPolicyRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	name := d.Id()
 
 	log.Printf("[DEBUG] Reading Sentinel policy %q", name)
@@ -125,7 +125,7 @@ func resourceSentinelPolicyRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceSentinelPolicyExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	name := d.Id()
 	log.Printf("[DEBUG] Checking if Sentinel policy %q exists", name)

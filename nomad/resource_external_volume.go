@@ -9,8 +9,8 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceExternalVolume() *schema.Resource {
@@ -235,7 +235,7 @@ func resourceExternalVolume() *schema.Resource {
 
 func resourceExternalVolumeCreate(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	// Parse capacities from human-friendly string to number.
 	capacityMin, err := humanize.ParseBytes(d.Get("capacity_min").(string))
@@ -310,7 +310,7 @@ func resourceExternalVolumeCreate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceExternalVolumeDelete(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	id := d.Id()
 	log.Printf("[DEBUG] deleting volume: %q", id)

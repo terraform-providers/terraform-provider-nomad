@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceJobParser() *schema.Resource {
@@ -35,7 +35,7 @@ func dataSourceJobParser() *schema.Resource {
 
 func dataSourceJobParserRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	hcl := d.Get("hcl").(string)
 	canonicalize := d.Get("canonicalize").(bool)

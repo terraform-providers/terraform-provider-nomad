@@ -1,6 +1,7 @@
 package nomad
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -13,8 +14,8 @@ import (
 	"github.com/hashicorp/nomad/api"
 	"github.com/hashicorp/nomad/jobspec"
 	"github.com/hashicorp/nomad/jobspec2"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceJob() *schema.Resource {
@@ -308,7 +309,7 @@ func resourceJobRegister(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	// Get the jobspec itself.
 	jobspecRaw := d.Get("jobspec").(string)
@@ -479,7 +480,7 @@ func deploymentStateRefreshFunc(client *api.Client, deploymentID string) resourc
 
 func resourceJobDeregister(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	// If deregistration is disabled, then do nothing
 	deregister_on_destroy := d.Get("deregister_on_destroy").(bool)
@@ -509,7 +510,7 @@ func resourceJobDeregister(d *schema.ResourceData, meta interface{}) error {
 
 func resourceJobRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	id := d.Id()
 	opts := &api.QueryOptions{
@@ -558,10 +559,10 @@ func resourceJobRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceJobCustomizeDiff(d *schema.ResourceDiff, meta interface{}) error {
+func resourceJobCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
 	log.Printf("[DEBUG] resourceJobCustomizeDiff")
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	if !d.NewValueKnown("jobspec") {
 		d.SetNewComputed("name")

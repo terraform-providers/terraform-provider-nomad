@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceACLPolicy() *schema.Resource {
@@ -46,7 +46,7 @@ func resourceACLPolicy() *schema.Resource {
 
 func resourceACLPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	policy := api.ACLPolicy{
 		Name:        d.Get("name").(string),
@@ -68,7 +68,7 @@ func resourceACLPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	policy := api.ACLPolicy{
 		Name:        d.Get("name").(string),
@@ -89,7 +89,7 @@ func resourceACLPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 	name := d.Id()
 
 	// delete the policy
@@ -105,7 +105,7 @@ func resourceACLPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 	name := d.Id()
 
 	// retrieve the policy
@@ -126,7 +126,7 @@ func resourceACLPolicyRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLPolicyExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	name := d.Id()
 	log.Printf("[DEBUG] Checking if ACL policy %q exists", name)

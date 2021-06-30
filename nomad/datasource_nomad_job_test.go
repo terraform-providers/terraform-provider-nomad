@@ -6,8 +6,8 @@ import (
 
 	"github.com/hashicorp/nomad/api"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccDataSourceNomadJob_Basic(t *testing.T) {
@@ -100,7 +100,7 @@ func testAccDataSourceNomadJobExists(n, namespace string) resource.TestCheckFunc
 		}
 
 		providerConfig := testProvider.Meta().(ProviderConfig)
-		client := providerConfig.client
+		client := providerConfig.Client
 
 		id := rs.Primary.ID
 

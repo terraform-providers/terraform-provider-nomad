@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceNamespaces() *schema.Resource {
@@ -22,7 +22,7 @@ func dataSourceNamespaces() *schema.Resource {
 }
 
 func namespacesDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	log.Printf("[DEBUG] Reading namespaces from Nomad")
 	resp, _, err := client.Namespaces().List(nil)

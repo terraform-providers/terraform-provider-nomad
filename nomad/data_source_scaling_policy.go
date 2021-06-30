@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-nomad/nomad/helper"
 )
 
@@ -54,7 +54,7 @@ func dataSourceScalingPolicy() *schema.Resource {
 }
 
 func scalingPolicyDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	id := d.Get("id").(string)
 	p, _, err := client.Scaling().GetPolicy(id, nil)

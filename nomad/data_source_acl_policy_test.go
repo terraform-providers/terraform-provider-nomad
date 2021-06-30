@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccDataSourceNomadAclPolicy_Basic(t *testing.T) {
@@ -63,7 +63,7 @@ func testAccDataSourceNomadAclPolicyExists(n string) resource.TestCheckFunc {
 		}
 
 		providerConfig := testProvider.Meta().(ProviderConfig)
-		client := providerConfig.client
+		client := providerConfig.Client
 
 		name := rs.Primary.ID
 

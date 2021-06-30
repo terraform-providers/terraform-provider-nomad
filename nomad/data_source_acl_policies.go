@@ -5,8 +5,8 @@ import (
 	"log"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceAclPolicies() *schema.Resource {
@@ -44,7 +44,7 @@ func dataSourceAclPolicies() *schema.Resource {
 
 func dataSourceAclPoliciesRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 	queryOpts := &api.QueryOptions{}
 	if v, ok := d.GetOk("prefix"); ok && v.(string) != "" {
 		queryOpts.Prefix = v.(string)

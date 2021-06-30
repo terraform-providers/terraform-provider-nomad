@@ -3,8 +3,8 @@ package nomad
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-nomad/nomad/helper"
 )
 
@@ -35,7 +35,7 @@ func dataSourceSchedulerConfig() *schema.Resource {
 
 func dataSourceSchedulerConfigRead(d *schema.ResourceData, meta interface{}) error {
 
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	schedCfg, _, err := client.Operator().SchedulerGetConfiguration(nil)
 	if err != nil {

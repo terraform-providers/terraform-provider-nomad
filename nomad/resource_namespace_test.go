@@ -7,9 +7,9 @@ import (
 	"testing"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestResourceNamespace_import(t *testing.T) {
@@ -161,7 +161,7 @@ func testResourceNamespace_initialCheck(name string) resource.TestCheckFunc {
 			return fmt.Errorf("expected description to be %q, is %q in state", description, instanceState.Attributes["description"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		namespace, _, err := client.Namespaces().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back namespace %q: %s", name, err)
@@ -180,7 +180,7 @@ func testResourceNamespace_initialCheck(name string) resource.TestCheckFunc {
 
 func testResourceNamespace_checkExists(name string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		namespace, _, err := client.Namespaces().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back namespace %q: %s", name, err)
@@ -195,7 +195,7 @@ func testResourceNamespace_checkExists(name string) resource.TestCheckFunc {
 
 func testResourceNamespace_checkDestroy(name string) resource.TestCheckFunc {
 	return func(*terraform.State) error {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		namespace, _, err := client.Namespaces().Info(name, nil)
 		if err != nil && strings.Contains(err.Error(), "404") || namespace == nil {
 			return nil
@@ -211,7 +211,7 @@ func testResourceNamespace_checkResetDefault() resource.TestCheckFunc {
 			Description: "Default shared namespace",
 			Quota:       "",
 		}
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		namespace, _, err := client.Namespaces().Info(defaultNamespace.Name, nil)
 		if err != nil {
 			return fmt.Errorf("failed to find default namespace %q.", defaultNamespace.Name)
@@ -226,7 +226,7 @@ func testResourceNamespace_checkResetDefault() resource.TestCheckFunc {
 
 func testResourceNamespace_delete(t *testing.T, name string) func() {
 	return func() {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		_, err := client.Namespaces().Delete(name, nil)
 		if err != nil {
 			t.Fatalf("error deleting namespace %q: %s", name, err)
@@ -270,7 +270,7 @@ func testResourceNamespace_updateCheck(name string) resource.TestCheckFunc {
 			return fmt.Errorf("expected description to be %q, is %q in state", description, instanceState.Attributes["description"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		namespace, _, err := client.Namespaces().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back namespace %q: %s", name, err)

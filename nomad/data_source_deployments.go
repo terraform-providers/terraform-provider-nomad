@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceDeployments() *schema.Resource {
@@ -26,7 +26,7 @@ func dataSourceDeployments() *schema.Resource {
 
 func dataSourceDeploymentsRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	log.Printf("[DEBUG] Getting deployments...")
 	deployment_list, _, err := client.Deployments().List(nil)

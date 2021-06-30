@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/nomad/api"
 )
@@ -190,7 +190,7 @@ func testResourceQuotaSpecification_initialCheck(name string) resource.TestCheck
 				instanceState.Attributes["limits."+key+".region_limit."+regKey+".cpu"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		spec, _, err := client.Quotas().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back quota specification %q: %s", name, err)
@@ -219,7 +219,7 @@ func testResourceQuotaSpecification_initialCheck(name string) resource.TestCheck
 
 func testResourceQuotaSpecification_checkExists(name string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		spec, _, err := client.Quotas().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back quota specification %q: %s", name, err)
@@ -234,7 +234,7 @@ func testResourceQuotaSpecification_checkExists(name string) resource.TestCheckF
 
 func testResourceQuotaSpecification_checkDestroy(name string) resource.TestCheckFunc {
 	return func(*terraform.State) error {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		spec, _, err := client.Quotas().Info(name, nil)
 		if err != nil && strings.Contains(err.Error(), "404") || spec == nil {
 			return nil
@@ -247,7 +247,7 @@ func testResourceQuotaSpecification_checkDestroy(name string) resource.TestCheck
 
 func testResourceQuotaSpecification_delete(t *testing.T, name string) func() {
 	return func() {
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		_, err := client.Quotas().Delete(name, nil)
 		if err != nil {
 			t.Fatalf("error deleting quota specification %q: %s", name, err)
@@ -344,7 +344,7 @@ func testResourceQuotaSpecification_updateCheck(name string) resource.TestCheckF
 				instanceState.Attributes["limits."+key+".region_limit."+regKey+".memory_mb"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		spec, _, err := client.Quotas().Info(name, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back quota specification %q: %s", name, err)

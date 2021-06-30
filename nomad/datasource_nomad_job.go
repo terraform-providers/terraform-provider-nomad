@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceJob() *schema.Resource {
@@ -164,7 +164,7 @@ func dataSourceJob() *schema.Resource {
 
 func dataSourceJobRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	id := d.Get("job_id").(string)
 	ns := d.Get("namespace").(string)

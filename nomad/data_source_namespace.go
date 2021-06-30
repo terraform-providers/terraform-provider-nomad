@@ -3,7 +3,7 @@ package nomad
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceNamespace() *schema.Resource {
@@ -28,7 +28,7 @@ func dataSourceNamespace() *schema.Resource {
 }
 
 func namespaceDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	name := d.Get("name").(string)
 	ns, _, err := client.Namespaces().Info(name, nil)

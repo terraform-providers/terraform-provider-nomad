@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestResourceACLToken_import(t *testing.T) {
@@ -121,7 +121,7 @@ func testResourceACLToken_initialCheck() resource.TestCheckFunc {
 			return fmt.Errorf("expected policies.# to be %q, is %q in state", policies, instanceState.Attributes["policies.#"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		token, _, err := client.ACLTokens().Info(instanceState.ID, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back token %q: %s", instanceState.ID, err)
@@ -152,7 +152,7 @@ func testResourceACLToken_checkDestroy(s *terraform.State) error {
 		if s.Primary == nil {
 			continue
 		}
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		token, _, err := client.ACLTokens().Info(s.Primary.ID, nil)
 		if err != nil && strings.Contains(err.Error(), "404") || token == nil {
 			continue
@@ -216,7 +216,7 @@ func testResourceACLToken_updateCheck() resource.TestCheckFunc {
 			return fmt.Errorf("expected policies.# to be %q, is %q in state", policies, instanceState.Attributes["policies.#"])
 		}
 
-		client := testProvider.Meta().(ProviderConfig).client
+		client := testProvider.Meta().(ProviderConfig).Client
 		token, _, err := client.ACLTokens().Info(instanceState.ID, nil)
 		if err != nil {
 			return fmt.Errorf("error reading back token %q: %s", instanceState.ID, err)

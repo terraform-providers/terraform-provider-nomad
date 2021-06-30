@@ -1,6 +1,7 @@
 package nomad
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
@@ -9,9 +10,9 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 // How to run the acceptance tests for this provider:
@@ -39,15 +40,15 @@ func TestProvider(t *testing.T) {
 }
 
 func TestProvider_impl(t *testing.T) {
-	var _ terraform.ResourceProvider = Provider()
+	var _ *schema.Provider = Provider()
 }
 
 var testProvider *schema.Provider
-var testProviders map[string]terraform.ResourceProvider
+var testProviders map[string]*schema.Provider
 
 func init() {
 	testProvider = Provider()
-	testProviders = map[string]terraform.ResourceProvider{
+	testProviders = map[string]*schema.Provider{
 		"nomad": testProvider,
 	}
 }
@@ -57,7 +58,7 @@ func testAccPreCheck(t *testing.T) {
 		os.Setenv("NOMAD_ADDR", "http://127.0.0.1:4646")
 	}
 
-	err := testProvider.Configure(terraform.NewResourceConfigRaw(nil))
+	err := testProvider.Configure(context.Background(), terraform.NewResourceConfigRaw(nil))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +66,7 @@ func testAccPreCheck(t *testing.T) {
 
 func testEntFeatures(t *testing.T, requiredFeatures ...string) {
 	testCheckEnt(t)
-	client := testProvider.Meta().(ProviderConfig).client
+	client := testProvider.Meta().(ProviderConfig).Client
 	resp, _, err := client.Operator().LicenseGet(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -88,7 +89,7 @@ func testCheckEnt(t *testing.T) {
 }
 
 func testCheckVersion(t *testing.T, versionCheck func(version.Version) bool) {
-	client := testProvider.Meta().(ProviderConfig).client
+	client := testProvider.Meta().(ProviderConfig).Client
 	if nodes, _, err := client.Nodes().List(nil); err == nil && len(nodes) > 0 {
 		if version, err := version.NewVersion(nodes[0].Version); err != nil {
 			t.Skip("could not parse node version: ", err)
@@ -113,7 +114,7 @@ func testCheckMinVersion(t *testing.T, v string) {
 }
 
 func testCheckVaultEnabled(t *testing.T) {
-	client := testProvider.Meta().(ProviderConfig).client
+	client := testProvider.Meta().(ProviderConfig).Client
 	vaultEnabled := false
 	if nodes, _, err := client.Nodes().List(nil); err == nil && len(nodes) > 0 {
 		if node, _, err := client.Nodes().Info(nodes[0].ID, nil); err == nil {
@@ -185,7 +186,7 @@ func testAccCheckNomadProviderConfigWithHeaders(provider *schema.Provider) resou
 func testAccCheckNomadProviderConfigWithHeadersCrashCheckDestroy(provider *schema.Provider) resource.TestCheckFunc {
 	return func(_ *terraform.State) error {
 		providerConfig := provider.Meta().(ProviderConfig)
-		client := providerConfig.client
+		client := providerConfig.Client
 		namespaces, _, err := client.Namespaces().List(nil)
 		if err != nil {
 			return err
@@ -298,10 +299,10 @@ func testAccCheckNomadProviderConfigConsulToken(provider *schema.Provider) resou
 // This should only be used for TestAccNomadProvider_ tests which need to
 // reference the provider instance itself. Other testing should use
 // testAccProviderFactories or other related functions.
-func testAccProviderFactoryInternal(provider **schema.Provider) map[string]terraform.ResourceProviderFactory {
+func testAccProviderFactoryInternal(provider **schema.Provider) map[string]func() (*schema.Provider, error) {
 	p := Provider()
-	factories := map[string]terraform.ResourceProviderFactory{
-		"nomad": func() (terraform.ResourceProvider, error) {
+	factories := map[string]func() (*schema.Provider, error){
+		"nomad": func() (*schema.Provider, error) {
 			return p, nil
 		},
 	}

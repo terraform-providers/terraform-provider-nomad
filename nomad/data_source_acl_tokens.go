@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceACLTokens() *schema.Resource {
@@ -55,7 +55,7 @@ func dataSourceACLTokens() *schema.Resource {
 }
 
 func aclTokensDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	qOpts := &api.QueryOptions{
 		Prefix: d.Get("prefix").(string),

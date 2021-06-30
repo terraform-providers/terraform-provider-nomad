@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourcePlugin() *schema.Resource {
@@ -88,7 +88,7 @@ func dataSourcePlugin() *schema.Resource {
 
 func dataSourcePluginRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	wait := d.Get("wait_for_registration").(bool)
 	waitForHealthy := d.Get("wait_for_healthy").(bool)

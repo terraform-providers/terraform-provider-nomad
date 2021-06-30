@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceNamespace() *schema.Resource {
@@ -46,7 +46,7 @@ func resourceNamespace() *schema.Resource {
 }
 
 func resourceNamespaceWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	namespace := api.Namespace{
 		Name:        d.Get("name").(string),
@@ -66,7 +66,7 @@ func resourceNamespaceWrite(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceNamespaceDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	name := d.Id()
 
 	log.Printf("[DEBUG] Deleting namespace %q", name)
@@ -107,7 +107,7 @@ func resourceNamespaceDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceNamespaceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	name := d.Id()
 
 	log.Printf("[DEBUG] Reading namespace %q", name)
@@ -126,7 +126,7 @@ func resourceNamespaceRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceNamespaceExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	name := d.Id()
 	log.Printf("[DEBUG] Checking if namespace %q exists", name)

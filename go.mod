@@ -19,7 +19,9 @@ require (
 	github.com/hashicorp/go-version v1.3.0
 	github.com/hashicorp/nomad v1.1.0
 	github.com/hashicorp/nomad/api v0.0.0-20210517202321-f99f1e27bb66
-	github.com/hashicorp/terraform-plugin-sdk v1.17.2
+	github.com/hashicorp/terraform-plugin-go v0.3.0
+	github.com/hashicorp/terraform-plugin-mux v0.2.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.6.1
 	github.com/hashicorp/vault v0.10.4
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/stretchr/testify v1.7.0

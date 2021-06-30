@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func dataSourceScalingPolicies() *schema.Resource {
@@ -57,7 +57,7 @@ func dataSourceScalingPolicies() *schema.Resource {
 }
 
 func scalingPoliciesDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 
 	jobID := d.Get("job_id").(string)
 	typeQuery := d.Get("type").(string)

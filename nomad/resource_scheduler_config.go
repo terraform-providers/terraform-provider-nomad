@@ -6,8 +6,8 @@ import (
 	"log"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceSchedulerConfig() *schema.Resource {
@@ -54,7 +54,7 @@ func resourceSchedulerConfig() *schema.Resource {
 }
 
 func resourceSchedulerConfigurationCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	operator := client.Operator()
 
 	config := api.SchedulerConfiguration{
@@ -109,7 +109,7 @@ func resourceSchedulerConfigurationCreate(d *schema.ResourceData, meta interface
 func resourceSchedulerConfigurationDelete(_ *schema.ResourceData, _ interface{}) error { return nil }
 
 func resourceSchedulerConfigurationRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(ProviderConfig).client
+	client := meta.(ProviderConfig).Client
 	operator := client.Operator()
 
 	// The scheduler config doesn't have a UUID, so the resource uses the agent

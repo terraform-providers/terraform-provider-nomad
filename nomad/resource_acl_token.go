@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/nomad/api"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceACLToken() *schema.Resource {
@@ -73,7 +73,7 @@ func resourceACLToken() *schema.Resource {
 
 func resourceACLTokenCreate(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	policies := make([]string, 0, len(d.Get("policies").(*schema.Set).List()))
 	for _, pol := range d.Get("policies").(*schema.Set).List() {
@@ -109,7 +109,7 @@ func resourceACLTokenCreate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLTokenUpdate(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	policies := make([]string, 0, len(d.Get("policies").(*schema.Set).List()))
 	for _, pol := range d.Get("policies").(*schema.Set).List() {
@@ -136,7 +136,7 @@ func resourceACLTokenUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLTokenDelete(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 	accessor := d.Id()
 
 	// delete the token
@@ -152,7 +152,7 @@ func resourceACLTokenDelete(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLTokenRead(d *schema.ResourceData, meta interface{}) error {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 	accessor := d.Id()
 
 	// retrieve the token
@@ -177,7 +177,7 @@ func resourceACLTokenRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceACLTokenExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	providerConfig := meta.(ProviderConfig)
-	client := providerConfig.client
+	client := providerConfig.Client
 
 	accessor := d.Id()
 	log.Printf("[DEBUG] Checking if ACL token %q exists", accessor)
